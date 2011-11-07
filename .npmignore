@@ -1,0 +1,9 @@
+git_hooks/pre-commit
+examples/*~
+bin/*~
+lib/*~
+test/*~
+log/
+*~
+.gitignore
+.npmignore

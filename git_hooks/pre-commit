@@ -1,0 +1,6 @@
+#!/bin/sh
+RESULT_TEXT_OUTPUT=$(node test/run_test.js)
+RESULT_VALUE_OUTPUT=$?
+echo "$RESULT_TEXT_OUTPUT"
+exit $RESULT_VALUE_OUTPUT 
+
