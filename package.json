@@ -1,29 +1,26 @@
 { 
 	"name" : "log-to-file",
-	"description": "Simple and fast log writer. Rotation is supported. Just set a file name and a directory.",
+	"description": "A simple log writer. Rotation and compression (gzip) are supported.",
 	"version" : "0.1.0",
 	"author" : "Sebastien Dolard",
 	"email" : "sdolard@gmail.com",
 	"keywords" : ["log", "writter", "rotation"],
-	"url" : "https://github.com/sdolard/node-log-to-file",
+	"url" : "http://github.com/sdolard/node-log-to-file",
 	"repository": {
 		"type": "git",
-		"url": "git@github.com:sdolard/node-log-to-file.git"
+		"url": "git://github.com/sdolard/node-log-to-file.git"
 	},
 	"main" : "lib/log-to-file",
 	"license" : "MIT",
 	"scripts" : { 
 		"test" : "node test/run_test.js" 
 	},
-	"dependencies": {
-		"pkginfo": "0.2.x"
-	},
 	"engines": {
 		"node": ">= 0.6.0"
 	}, 
 	"bugs" :
 	{ 
-		"web" : "https://github.com/sdolard/node-log-to-file/issues"
+		"url" : "https://github.com/sdolard/node-log-to-file/issues"
 	}, 
 	"licenses" : [
 		{ 
