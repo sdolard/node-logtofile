@@ -11,8 +11,7 @@ i, tmp = '',
 benchParams = [
 	{
 		fileMaxSize:  ONE_M * 5,
-		maxBackupFileNumber: 0,
-		gzipBackupFile: false
+		maxBackupFileNumber: 0
 	},
 	{
 		fileMaxSize:  ONE_M * 5,
@@ -25,19 +24,24 @@ benchParams = [
 	},
 	{ 
 		fileMaxSize: ONE_M * 5,
-		maxBackupFileNumber: 10
-	},
-	{
-		fileMaxSize:  ONE_M * 10,
-		maxBackupFileNumber: 10
-	},
-	{ 
-		fileMaxSize: ONE_M * 5,
 		maxBackupFileNumber: 5,
 		gzipBackupFile: true
 	},
 	{ 
 		fileMaxSize: ONE_M * 5,
+		maxBackupFileNumber: 10
+	},
+	{ 
+		fileMaxSize: ONE_M * 5,
+		maxBackupFileNumber: 10,
+		gzipBackupFile: true
+	},
+	{
+		fileMaxSize:  ONE_M * 10,
+		maxBackupFileNumber: 10
+	},
+	{
+		fileMaxSize:  ONE_M * 10,
 		maxBackupFileNumber: 10,
 		gzipBackupFile: true
 	},

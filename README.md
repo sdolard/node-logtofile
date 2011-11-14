@@ -68,6 +68,7 @@ Returns a LogToFile instance.
 * @params [config.fileMaxSize] {number} Max file size (default 5MB) 
 * @params [config.maxBackupFileNumber] {number} Max backup file number (default 10) 
 * @params [config.gzipBackupFile] {boolean} gzip backup files (default false) 
+* @params [config.compressionLevel] {number} [1-9] 1: BEST_SPEED, 9: BEST_COMPRESSION, default to 1
 * @event error({object} exception)
 * @event writting({string} filePath): starting to write everything
 * @event written({string} filePath): everything is written
@@ -91,22 +92,25 @@ Just run test/log-to-file-bench.js
 ```
 Bench on my MacBook Pro 10.6.8, 2.53GHz Intel Core 2 Duo, 7200 HDD) with node 0.6.0:
 Running bench 0. fileMaxSize: 5.00MB, maxBackupFileNumber: 0, gzipBackupFile: 0
-................Total:1.00GB in 14224ms: 71.99MB/s
+................Total:1.00GB in 12704ms: 80.60MB/s
 Running bench 1. fileMaxSize: 5.00MB, maxBackupFileNumber: 0, gzipBackupFile: 1
-................Total:1.00GB in 14026ms: 73.01MB/s
+................Total:1.00GB in 13965ms: 73.33MB/s
 Running bench 2. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 0
-................Total:1.00GB in 11164ms: 91.72MB/s
-Running bench 3. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0
-................Total:1.00GB in 10869ms: 94.21MB/s
-Running bench 4. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0
-................Total:1.00GB in 11778ms: 86.94MB/s
-Running bench 5. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 1
-................Total:1.00GB in 25461ms: 40.22MB/s
-Running bench 6. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1
-................Total:1.00GB in 34820ms: 29.41MB/s
+................Total:1.00GB in 11047ms: 92.69MB/s
+Running bench 3. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 1
+................Total:1.00GB in 19520ms: 52.46MB/s
+Running bench 4. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0
+................Total:1.00GB in 11074ms: 92.47MB/s
+Running bench 5. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1
+................Total:1.00GB in 22329ms: 45.86MB/s
+Running bench 6. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0
+................Total:1.00GB in 10976ms: 93.29MB/s
 Running bench 7. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1
-................Total:1.00GB in 42160ms: 24.29MB/s
+................Total:1.00GB in 24251ms: 42.23MB/s
+Running bench 8. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1
+................Total:1.00GB in 24677ms: 41.50MB/s
 All done
+
 ```
 
 ## License
