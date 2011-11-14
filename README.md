@@ -5,7 +5,7 @@ Rotation and compression (gzip) are supported.
 
 * http://nodejs.org
 
-## Installation with npm > TODO
+## Installation with npm 
 ### Installing npm (node package manager: http://npmjs.org/)
 
 ```
