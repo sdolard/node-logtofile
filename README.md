@@ -90,7 +90,7 @@ Just run test/run_test.js
 Just run test/log-to-file-bench.js
 
 ```
-Bench on my MacBook Pro 10.6.8, 2.53GHz Intel Core 2 Duo, 7200 HDD) with node 0.6.0:
+Bench on my MacBook Pro (OS X 10.6.8, 2.53GHz Intel Core 2 Duo, 7200 HDD) with node 0.6.0:
 Running bench 0. fileMaxSize: 5.00MB, maxBackupFileNumber: 0, gzipBackupFile: 0
 ................Total:1.00GB in 12704ms: 80.60MB/s
 Running bench 1. fileMaxSize: 5.00MB, maxBackupFileNumber: 0, gzipBackupFile: 1

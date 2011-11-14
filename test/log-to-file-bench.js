@@ -138,6 +138,10 @@ function runTest() {
 			runTest();
 			
 	});
+	log.on('error', function(err){
+			console.log(err);
+	});
+	
 	
 	for (i = 0; i < elements; i++) {
 		log.write(dataTest); 
