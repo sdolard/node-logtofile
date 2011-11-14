@@ -2,6 +2,7 @@ var
 fs = require('fs'),
 path = require("path"),
 RE_JS_FILE=/.*\.js$/i;
+RE_BENCH_FILE=/.*bench.*/i;
 
 fs.readdir(__dirname, function (err, files) {
 		var 
@@ -18,6 +19,9 @@ fs.readdir(__dirname, function (err, files) {
 			if (file === "run_test.js") {
 				continue;
 			}
+			if (RE_BENCH_FILE.test(file)) {
+				continue;
+			}	
 			
 			try {
 				require(path.resolve(__dirname, file));
