@@ -86,7 +86,8 @@ catch(exceptionBaz) {
 
 log = logToFile.create({
 		directory: __dirname,
-		fileName: 'test.txt'
+		fileName: 'test.txt',
+		gzipBackupFile: true
 });
 
 log.on('writting', function(){
@@ -126,9 +127,15 @@ log.on('written', function(fileName){
 		
 });
 
-log.on('renamed', function (oldFilePath, newFilePath) {
-		console.log('%s renamed to %s', oldFilePath, newFilePath);
+/*log.on('backuped', function (filePath, newFilePath) {
+		console.log('%s backuped to %s', filePath, newFilePath);
 });
+log.on('gzipping', function (filePath, newFilePath) {
+		console.log('gzipping %s...', filePath);
+});
+log.on('gzipped', function (filePath, newFilePath) {
+		console.log('%s gzipped', filePath);
+});*/
 for (var i = 0; i < elements; i++) {
 	log.write(dataTest); 
 	size += dataTest.length;
