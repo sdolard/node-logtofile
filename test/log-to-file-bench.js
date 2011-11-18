@@ -1,4 +1,5 @@
 var
+path = require('path'),
 util = require('util'),
 fs = require('fs'),
 logToFile = require('../lib/log-to-file'),
@@ -39,11 +40,6 @@ benchParams = [
 	{
 		fileMaxSize:  ONE_M * 10,
 		maxBackupFileNumber: 10
-	},
-	{
-		fileMaxSize:  ONE_M * 10,
-		maxBackupFileNumber: 10,
-		gzipBackupFile: true
 	},
 	{
 		fileMaxSize:  ONE_M * 10,
@@ -94,7 +90,7 @@ function runTest() {
 				continue;
 			}
 			//console.log('unlink: %s', dirs[i]);
-			fs.unlinkSync(__dirname + '/' + dirs[i]);	
+			fs.unlinkSync(path.normalize(__dirname + '/' + dirs[i]));	
 		}
 		console.log('All done');
 		return;

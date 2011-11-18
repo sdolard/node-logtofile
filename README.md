@@ -90,7 +90,7 @@ Just run test/run_test.js
 Just run test/log-to-file-bench.js
 
 ```
-Bench on my MacBook Pro (OS X 10.6.8, 2.53GHz Intel Core 2 Duo, 7200 HDD) with node 0.6.0:
+Bench on my MacBook Pro OS X 10.6.8, 2.53GHz Intel Core 2 Duo (P8700), 7200 HDD with node 0.6.1:
 Running bench 0. fileMaxSize: 5.00MB, maxBackupFileNumber: 0, gzipBackupFile: 0
 ................Total:1.00GB in 12704ms: 80.60MB/s
 Running bench 1. fileMaxSize: 5.00MB, maxBackupFileNumber: 0, gzipBackupFile: 1
@@ -107,11 +107,32 @@ Running bench 6. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 
 ................Total:1.00GB in 10976ms: 93.29MB/s
 Running bench 7. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1
 ................Total:1.00GB in 24251ms: 42.23MB/s
-Running bench 8. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1
-................Total:1.00GB in 24677ms: 41.50MB/s
 All done
 
 ```
+
+```
+Bench on my Ubuntu 11.10 desktop, 3GHz Intel Core 2 Duo CPU (E8400), 7200 HDD with node 0.6.1:
+Running bench 0. fileMaxSize: 5.00MB, maxBackupFileNumber: 0, gzipBackupFile: 0
+................Total:1.00GB in 2447ms: 418.47MB/s
+Running bench 1. fileMaxSize: 5.00MB, maxBackupFileNumber: 0, gzipBackupFile: 1
+................Total:1.00GB in 2453ms: 417.45MB/s
+Running bench 2. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 0
+................Total:1.00GB in 2578ms: 397.21MB/s
+Running bench 3. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 1
+................Total:1.00GB in 9936ms: 103.06MB/s
+Running bench 4. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0
+................Total:1.00GB in 13173ms: 77.73MB/s
+Running bench 5. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1
+................Total:1.00GB in 9564ms: 107.07MB/s
+Running bench 6. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0
+................Total:1.00GB in 13550ms: 75.57MB/s
+Running bench 7. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1
+................Total:1.00GB in 9151ms: 111.90MB/s
+All done
+
+```
+
 
 ## License
 node-log-to-file is licensed under the MIT license.
