@@ -33,9 +33,6 @@ dataTest = [
 endData = '',
 rs, 
 log,
-EEMPTYFILENAME = 0,
-EEMPTYDIRECTORY = 0,
-EDIRNOTFOUND = 0,
 endEvent = 0,
 closeEventUnlink = 0,
 readStreamErrorEvent = 0,
@@ -48,42 +45,11 @@ gzippingEvent = 0,
 gzippedEvent = 0;
 
 
-try {
-	log = logToFile.create();
-}
-catch(exceptionFoo) {
-	if (exceptionFoo.code === 'EEMPTYFILENAME') {
-		EEMPTYFILENAME++;
-	}
-}
-
-try {
-	log = logToFile.create({
-			fileName: 'l_connection'
-	});
-}
-catch(exceptionBar) {
-	if (exceptionBar.code === 'EEMPTYDIRECTORY') {
-		EEMPTYDIRECTORY++;
-	}
-}
-
-try {
-	log = logToFile.create({
-			directory: '•ë“‘',
-			fileName: 'l_connection'
-	});
-}
-catch(exceptionBaz) {
-	if (exceptionBaz.code === 'EDIRNOTFOUND') {
-		EDIRNOTFOUND++;
-	}
-}
-
 log = logToFile.create({
 		directory: __dirname,
 		fileName: path.basename(__filename) + '.test.txt',
-		gzipBackupFile: false
+		gzipBackupFile: false,
+		fileMaxSize: dataTest.length
 });
 
 log.on('error', function(err){
@@ -99,9 +65,13 @@ log.on('write', function(){
 		writeEvent++;
 });
 
-log.on('written', function(filePath){
-		writtenEvent++;
-		rs = fs.createReadStream(filePath, { 
+log.on('written', function(fileName){
+		writtenEvent++;	
+});
+
+log.on('backuped', function (filePath, newFilePath) {
+		backupedEvent++;
+		rs = fs.createReadStream(filePath + '.00', { 
 				encoding: 'utf8'
 		});
 		
@@ -113,7 +83,6 @@ log.on('written', function(filePath){
 		});
 		rs.on('error', function (exception) { 
 				readStreamErrorEvent++;
-				//console.log('ReadStream exception: %s(%s)', exception.message, exception.code);
 		});
 		rs.on('close', function () { 
 				// Clean up
@@ -124,14 +93,16 @@ log.on('written', function(filePath){
 						closeEventUnlink++;
 						
 				});
-				assert.equal(endData, dataTest);
-				log.write(dataTest); // this should throw an error (file do not exists more)
+				// Clean up
+				fs.unlink(filePath + '.00', function (err) {
+						if (err) {
+							throw err;
+						}
+						closeEventUnlink++;
+						
+				});
+				assert.equal(endData, dataTest);				
 		});
-		
-});
-
-log.on('backuped', function (filePath, newFilePath) {
-		backupedEvent++;
 });
 
 log.on('gzipping', function (filePath, newFilePath) {
@@ -144,25 +115,24 @@ log.on('gzipped', function (filePath, newFilePath) {
 
 log.write(dataTest); 
 
+
+process.on('uncaughtException', function (err) {
+		console.log('Caught exception: ' + err);
+});
+
 process.on('exit', function () {
-		// Exception
-		assert.strictEqual(EEMPTYFILENAME, 1, 'EEMPTYFILENAME');
-		assert.strictEqual(EEMPTYDIRECTORY, 1, 'EEMPTYDIRECTORY');
-		assert.strictEqual(EDIRNOTFOUND, 1, 'EDIRNOTFOUND');
-		
 		// Event
 		assert.strictEqual(errorEvent, 0, 'errorEvent');
-		assert.strictEqual(writtingEvent, 2, 'writtingEvent');
-		assert.strictEqual(writeEvent, 2, 'writeEvent');
-		assert.strictEqual(writtenEvent, 2, 'writtenEvent');
-		assert.strictEqual(backupedEvent, 0, 'backupedEvent');
+		assert.strictEqual(writtingEvent, 1, 'writtingEvent');
+		assert.strictEqual(writeEvent, 1, 'writeEvent');
+		assert.strictEqual(writtenEvent, 1, 'writtenEvent');
+		assert.strictEqual(backupedEvent, 1, 'backupedEvent');
 		assert.strictEqual(gzippingEvent, 0, 'gzippingEvent');
 		assert.strictEqual(gzippedEvent, 0, 'gzippedEvent');
 		
 		// Cleanup
 		assert.strictEqual(endEvent, 1, 'endEvent');
-		assert.strictEqual(closeEventUnlink, 1, 'closeEventUnlink');
-		assert.strictEqual(readStreamErrorEvent, 1, 'readStreamErrorEvent');
+		assert.strictEqual(closeEventUnlink, 2, 'closeEventUnlink ');
 });
 
 

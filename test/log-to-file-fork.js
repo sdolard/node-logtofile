@@ -25,13 +25,14 @@ assert = require('assert'),
 path = require('path'),
 util = require('util'),
 fs = require('fs'),
-logToFile = require('../lib/log-to-file'),
+logToFile = require('../lib/log-to-file-fork'),
 dataTest = [
 	'1234567890AZERTYUIOPQSDFGHJKLMWXCVBN',
 	'&é"(§è!çà)-azertyuiop^qsdfghjklmù`xcvbn,;:='
 ].join(''),
 endData = '',
 rs, 
+logs = [],
 log,
 EEMPTYFILENAME = 0,
 EEMPTYDIRECTORY = 0,
@@ -48,42 +49,44 @@ gzippingEvent = 0,
 gzippedEvent = 0;
 
 
-try {
-	log = logToFile.create();
-}
-catch(exceptionFoo) {
-	if (exceptionFoo.code === 'EEMPTYFILENAME') {
-		EEMPTYFILENAME++;
-	}
-}
+// EEMPTYFILENAME
+logs.push(logToFile.create({
+}));
+logs[0].on('error', function(err) {
+		if (err.code === 'EEMPTYFILENAME') {
+			EEMPTYFILENAME++;
+		}
+});
 
-try {
-	log = logToFile.create({
-			fileName: 'l_connection'
-	});
-}
-catch(exceptionBar) {
-	if (exceptionBar.code === 'EEMPTYDIRECTORY') {
-		EEMPTYDIRECTORY++;
-	}
-}
 
-try {
-	log = logToFile.create({
-			directory: '•ë“‘',
-			fileName: 'l_connection'
-	});
-}
-catch(exceptionBaz) {
-	if (exceptionBaz.code === 'EDIRNOTFOUND') {
-		EDIRNOTFOUND++;
-	}
-}
+// EEMPTYDIRECTORY
+logs.push(logToFile.create({
+		fileName: 'l_connection'
+}));
+logs[1].on('error', function(err) {
+		if (err.code === 'EEMPTYDIRECTORY') {
+			EEMPTYDIRECTORY++;
+		}
+});
+
+
+// EDIRNOTFOUND
+logs.push(logToFile.create({
+		directory: '•ë“‘',
+		fileName: 'l_connection'
+}));
+logs[2].on('error', function(err) {
+		if (err.code === 'EDIRNOTFOUND') {
+			EDIRNOTFOUND++;
+		}
+});
 
 log = logToFile.create({
 		directory: __dirname,
 		fileName: path.basename(__filename) + '.test.txt',
 		gzipBackupFile: false
+}, function() {
+	log.write(dataTest); 
 });
 
 log.on('error', function(err){
@@ -126,6 +129,7 @@ log.on('written', function(filePath){
 				});
 				assert.equal(endData, dataTest);
 				log.write(dataTest); // this should throw an error (file do not exists more)
+				log.terminate();
 		});
 		
 });
@@ -133,16 +137,13 @@ log.on('written', function(filePath){
 log.on('backuped', function (filePath, newFilePath) {
 		backupedEvent++;
 });
-
 log.on('gzipping', function (filePath, newFilePath) {
 		gzippingEvent++;
 });
-
 log.on('gzipped', function (filePath, newFilePath) {
 		gzippedEvent++;
 });
 
-log.write(dataTest); 
 
 process.on('exit', function () {
 		// Exception
