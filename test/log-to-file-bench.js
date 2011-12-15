@@ -131,7 +131,8 @@ function runTest() {
 				octetToHuman(size), 
 				duration, 
 				octetToHuman(size * 1000 / duration));
-			runTest();
+			
+			setTimeout(runTest, 10);
 			
 	});
 	log.on('error', function(err){
