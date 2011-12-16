@@ -3,6 +3,7 @@ path = require('path'),
 util = require('util'),
 fs = require('fs'),
 logToFile = require('../lib/log-to-file'),
+logToFileFork = require('../lib/log-to-file-fork'),
 dataTest = '0',
 ONE_K = 1024,
 ONE_M = ONE_K * 1024,
@@ -13,39 +14,39 @@ benchParams = [
 	{
 		fileMaxSize:  ONE_M * 5,
 		maxBackupFileNumber: 0
+	}/*,
+	{
+	fileMaxSize:  ONE_M * 5,
+	maxBackupFileNumber: 0,
+	gzipBackupFile: true
+	},
+	{ 
+	fileMaxSize: ONE_M * 5,
+	maxBackupFileNumber: 5
+	},
+	{ 
+	fileMaxSize: ONE_M * 5,
+	maxBackupFileNumber: 5,
+	gzipBackupFile: true
+	},
+	{ 
+	fileMaxSize: ONE_M * 5,
+	maxBackupFileNumber: 10
+	},
+	{ 
+	fileMaxSize: ONE_M * 5,
+	maxBackupFileNumber: 10,
+	gzipBackupFile: true
 	},
 	{
-		fileMaxSize:  ONE_M * 5,
-		maxBackupFileNumber: 0,
-		gzipBackupFile: true
-	},
-	{ 
-		fileMaxSize: ONE_M * 5,
-		maxBackupFileNumber: 5
-	},
-	{ 
-		fileMaxSize: ONE_M * 5,
-		maxBackupFileNumber: 5,
-		gzipBackupFile: true
-	},
-	{ 
-		fileMaxSize: ONE_M * 5,
-		maxBackupFileNumber: 10
-	},
-	{ 
-		fileMaxSize: ONE_M * 5,
-		maxBackupFileNumber: 10,
-		gzipBackupFile: true
+	fileMaxSize:  ONE_M * 10,
+	maxBackupFileNumber: 10
 	},
 	{
-		fileMaxSize:  ONE_M * 10,
-		maxBackupFileNumber: 10
-	},
-	{
-		fileMaxSize:  ONE_M * 10,
-		maxBackupFileNumber: 10,
-		gzipBackupFile: true
-}], bi = 0;
+	fileMaxSize:  ONE_M * 10,
+	maxBackupFileNumber: 10,
+	gzipBackupFile: true
+}*/], bi = 0;
 
 for ( i = 0; i < 1024; ++i) {
 	tmp += dataTest;
@@ -70,6 +71,89 @@ function octetToHuman(o) {
 }
 
 
+function cleanup() {
+	dirs  = fs.readdirSync(__dirname);
+	RE = /benchtest.txt.*/i;
+	for (i = 0; i < dirs.length; i++)
+	{
+		if (!RE.test(dirs[i])){
+			continue;
+		}
+		fs.unlinkSync(path.normalize(__dirname + '/' + dirs[i]));	
+	}
+}
+
+function runTestFork() {
+	
+	var 
+	size = 0,
+	log,
+	elements = 1024 * 1024, 
+	start, end, writtingEventCount = 0,
+	wcount = 0,
+	config = benchParams[bi];
+	
+	if (benchParams.length === bi) {
+		console.log('All done');
+		return;
+	}
+	if (bi === 0) {
+		console.log('---------------------------------------------------------');
+		console.log('Starting fork interface benchs');
+		console.log('---------------------------------------------------------');
+	}
+	log = logToFileFork.create({
+			directory: __dirname,
+			fileName: 'benchtest.txt',
+			fileMaxSize: config.fileMaxSize,
+			maxBackupFileNumber: config.maxBackupFileNumber,
+			gzipBackupFile: config.gzipBackupFile || false,
+			verbose: config.verbose || false
+	}, function() {
+		for (i = 0; i < elements; i++) {
+			log.write(dataTest); 
+			size += dataTest.length;
+		}
+	});
+	console.log('Running fork bench %d . fileMaxSize: %s, maxBackupFileNumber: %d, gzipBackupFile: %d', bi, 
+		octetToHuman(log.fileMaxSize), 
+		log.maxBackupFileNumber,
+		log.gzipBackupFile);
+	bi++;
+	log.on('writting', function(fileName){
+			if (writtingEventCount === 0) {
+				start = Date.now();
+			}
+			writtingEventCount ++; 
+	});
+	
+	log.on('write', function(fileName){
+			if (wcount % 1024 === 0) {
+				util.print(".");
+			}
+			wcount++;
+	});
+	
+	log.on('written', function(fileName){
+			var duration;
+			end = Date.now();
+			duration = end - start;
+			console.log('Total:%s in %dms: %s/s', 
+				octetToHuman(size), 
+				duration, 
+				octetToHuman(size * 1000 / duration));
+			
+			setTimeout(cleanup, 10);
+			setTimeout(runTestFork, 10);
+			
+			log.terminate();
+			
+	});
+	log.on('error', function(err){
+			console.log(err);
+	});
+}
+
 function runTest() {
 	
 	var 
@@ -81,19 +165,14 @@ function runTest() {
 	config = benchParams[bi];
 	
 	if (benchParams.length === bi) {
-		//clean up
-		dirs  = fs.readdirSync(__dirname);
-		RE = /benchtest.txt.*/i;
-		for (i = 0; i < dirs.length; i++)
-		{
-			if (!RE.test(dirs[i])){
-				continue;
-			}
-			//console.log('unlink: %s', dirs[i]);
-			fs.unlinkSync(path.normalize(__dirname + '/' + dirs[i]));	
-		}
-		console.log('All done');
+		bi = 0;
+		setTimeout(runTestFork, 10);
 		return;
+	}
+	if (bi === 0) {
+		console.log('---------------------------------------------------------');
+		console.log('Starting standard benchs');
+		console.log('---------------------------------------------------------');
 	}
 	
 	log = logToFile.create({
@@ -132,8 +211,8 @@ function runTest() {
 				duration, 
 				octetToHuman(size * 1000 / duration));
 			
-			setTimeout(runTest, 10);
-			
+			setTimeout(cleanup, 10);
+			setTimeout(runTest, 10);			
 	});
 	log.on('error', function(err){
 			console.log(err);
@@ -146,5 +225,8 @@ function runTest() {
 	}
 }
 
-runTest();
+
+cleanup();
+//runTest();
+runTestFork();
 
