@@ -15,7 +15,7 @@ benchParams = [
 		//verbose: true,
 		fileMaxSize:  ONE_M * 5,
 		maxBackupFileNumber: 0
-	}/*,
+	},
 	{
 		fileMaxSize:  ONE_M * 5,
 		maxBackupFileNumber: 1
@@ -51,7 +51,7 @@ benchParams = [
 		fileMaxSize:  ONE_M * 10,
 		maxBackupFileNumber: 10,
 		gzipBackupFile: true
-}*/], bi = 0;
+}], bi = 0;
 
 for ( i = 0; i < 1024; ++i) {
 	tmp += dataTest; // 1Ko
@@ -233,6 +233,6 @@ function runTest() {
 
 
 cleanup();
-//runTest();
-runTestFork();
+runTest();
+//runTestFork();
 
