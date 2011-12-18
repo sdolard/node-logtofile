@@ -12,44 +12,49 @@ ONE_T = ONE_G * 1024,
 i, tmp = '',
 benchParams = [
 	{
+		//verbose: true,
 		fileMaxSize:  ONE_M * 5,
 		maxBackupFileNumber: 0
 	}/*,
 	{
-	fileMaxSize:  ONE_M * 5,
-	maxBackupFileNumber: 0,
-	gzipBackupFile: true
-	},
-	{ 
-	fileMaxSize: ONE_M * 5,
-	maxBackupFileNumber: 5
-	},
-	{ 
-	fileMaxSize: ONE_M * 5,
-	maxBackupFileNumber: 5,
-	gzipBackupFile: true
-	},
-	{ 
-	fileMaxSize: ONE_M * 5,
-	maxBackupFileNumber: 10
-	},
-	{ 
-	fileMaxSize: ONE_M * 5,
-	maxBackupFileNumber: 10,
-	gzipBackupFile: true
+		fileMaxSize:  ONE_M * 5,
+		maxBackupFileNumber: 1
 	},
 	{
-	fileMaxSize:  ONE_M * 10,
-	maxBackupFileNumber: 10
+		fileMaxSize:  ONE_M * 5,
+		maxBackupFileNumber: 1,
+		gzipBackupFile: true
+	},
+	{ 
+		fileMaxSize: ONE_M * 5,
+		maxBackupFileNumber: 5
+	},
+	{ 
+		fileMaxSize: ONE_M * 5,
+		maxBackupFileNumber: 5,
+		gzipBackupFile: true
+	},
+	{ 
+		fileMaxSize: ONE_M * 5,
+		maxBackupFileNumber: 10
+	},
+	{ 
+		fileMaxSize: ONE_M * 5,
+		maxBackupFileNumber: 10,
+		gzipBackupFile: true
 	},
 	{
-	fileMaxSize:  ONE_M * 10,
-	maxBackupFileNumber: 10,
-	gzipBackupFile: true
+		fileMaxSize:  ONE_M * 10,
+		maxBackupFileNumber: 10
+	},
+	{
+		fileMaxSize:  ONE_M * 10,
+		maxBackupFileNumber: 10,
+		gzipBackupFile: true
 }*/], bi = 0;
 
 for ( i = 0; i < 1024; ++i) {
-	tmp += dataTest;
+	tmp += dataTest; // 1Ko
 }
 dataTest = tmp;
 
@@ -84,11 +89,10 @@ function cleanup() {
 }
 
 function runTestFork() {
-	
 	var 
 	size = 0,
 	log,
-	elements = 1024 * 1024, 
+	elements = 1024 * 5,// 5Mo * 1024, 
 	start, end, writtingEventCount = 0,
 	wcount = 0,
 	config = benchParams[bi];
@@ -110,16 +114,18 @@ function runTestFork() {
 			gzipBackupFile: config.gzipBackupFile || false,
 			verbose: config.verbose || false
 	}, function() {
+		console.log('Running fork bench %d . fileMaxSize: %s, maxBackupFileNumber: %d, gzipBackupFile: %d', bi, 
+			octetToHuman(log.fileMaxSize), 
+			log.maxBackupFileNumber,
+			log.gzipBackupFile);
+		bi++;
+		
 		for (i = 0; i < elements; i++) {
 			log.write(dataTest); 
 			size += dataTest.length;
 		}
 	});
-	console.log('Running fork bench %d . fileMaxSize: %s, maxBackupFileNumber: %d, gzipBackupFile: %d', bi, 
-		octetToHuman(log.fileMaxSize), 
-		log.maxBackupFileNumber,
-		log.gzipBackupFile);
-	bi++;
+	
 	log.on('writting', function(fileName){
 			if (writtingEventCount === 0) {
 				start = Date.now();
@@ -143,7 +149,7 @@ function runTestFork() {
 				duration, 
 				octetToHuman(size * 1000 / duration));
 			
-			setTimeout(cleanup, 10);
+			//setTimeout(cleanup, 10);
 			setTimeout(runTestFork, 10);
 			
 			log.terminate();
@@ -166,7 +172,7 @@ function runTest() {
 	
 	if (benchParams.length === bi) {
 		bi = 0;
-		setTimeout(runTestFork, 10);
+		//setTimeout(runTestFork, 10);
 		return;
 	}
 	if (bi === 0) {
