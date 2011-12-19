@@ -88,6 +88,7 @@ Older files have got bigger index, with gzip enabled
 ## Exports 
 ### 'create'
 Returns a LogToFile instance.
+
 ```
 /**
 * @public
