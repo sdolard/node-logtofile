@@ -22,16 +22,47 @@ curl http://npmjs.org/install.sh || sh
 ## Usage
 ### Basic 
 ```javascript
-logToFile = require('log-to-file'),
 log = logToFile.create({
-		directory: __dirname/log,
+		directory: __dirname,
 		fileName: 'log.txt'
 });
-log.write('hello world');
-		
+
+log.on('error', function(err){
+		console.log("Error: ", err);
+});
+
+log.on('writting', function(){
+		//something
+});
+
+log.on('write', function(){
+		//something
+});
+
+log.on('written', function(filePath){
+		//something		
+});
+
+log.on('backuped', function (filePath, newFilePath) {
+		//something
+});
+
+log.on('gzipping', function (filePath, newFilePath) {
+		//something
+});
+
+log.on('gzipped', function (filePath, newFilePath) {
+		//something
+});
+
+log.write("hello world");
+
 ```
+
+
 ```
-This will create log files following this naming convention:
+### Generated files
+log-to-file will create log files following this naming convention:
 	original:    fileName [+ '.' +  fileExt]
 	rotation:    filename [+ '.' +  fileExt] + '.' + fileIndex 
 	compression: filename [+ '.' +  fileExt] + '.' + fileIndex + '.gz'
@@ -57,31 +88,38 @@ Older files have got bigger index, with gzip enabled
 ## Exports 
 ### 'create'
 Returns a LogToFile instance.
-
 ```
 /**
+* @public
 * @class LogToFile
-* @params config.fileName {string} 
-* @params config.directory {string} 
-* @params [config.writeDelay] {number} Buffer flushed timming (default 200ms)
-* @params [config.bufferSize] {number} Buffer blocks size (default 65536o) 
-* @params [config.fileMaxSize] {number} Max file size (default 5MB) 
-* @params [config.maxBackupFileNumber] {number} Max backup file number (default 10) 
-* @params [config.gzipBackupFile] {boolean} gzip backup files (default false) 
-* @params [config.compressionLevel] {number} [1-9] 1: BEST_SPEED, 9: BEST_COMPRESSION, default to 1
-* @event error({object} exception)
-* @event writting({string} filePath): starting to write everything
-* @event written({string} filePath): everything is written
-* @event backuped({string} filePath, {string} newFilePath): filePath was renamed to newFilePath
-* @event gzipping({string} filePath, {string} gzippedFilePath): starting to gzip filePath to gzippedFilePath
-* @event gzipped({string} filePath, {string} gzippedFilePath): filePath was gzipped to gzippedFilePath
-* @throw EEMPTYFILENAME
-* @throw EDIRNOTFOUND
-* @throw EEMPTYDIRECTORY
+*
+* @params {string} config.fileName
+* @params {string} config.directory
+* @params {number} [config.writeDelay] Buffer flushed timming (default 200ms)
+* @params {number} [config.bufferSize] Buffer blocks size (default 65536o) 
+* @params {number} [config.fileMaxSize] Max file size in octet (default 5MB) 
+* @params {number} [config.maxBackupFileNumber] Max backup file number (default 10) 
+* @params {boolean} [config.gzipBackupFile] gzip backup files (default false) 
+* @params {number} [config.compressionLevel] [1-9] 1: BEST_SPEED, 9: BEST_COMPRESSION, default to 1
+* @params {boolean} [config.verbose] enable verbose mode, default to false
+*
+* @event error({object} exception): when an async exception occured
+* @event writting({string} filePath): when starting to write
+* @event written({string} filePath): when everything is written
+* @event backuped({string} filePath, {string} newFilePath): when filePath was renamed to newFilePath
+* @event gzipping({string} filePath, {string} gzippedFilePath): when starting to gzip filePath to gzippedFilePath
+* @event gzipped({string} filePath, {string} gzippedFilePath): when filePath was gzipped to gzippedFilePath
+*
+* @throws EEMPTYFILENAME: when config.filename is not set
+* @throws EEMPTYDIRECTORY: when config.directory is not set
+* @throws EDIRNOTFOUND: when config.directory does not exist
 */
+
 ```
 
+
 ## Known issues
+
 
 ## Test
 Just run test/run_test.js
