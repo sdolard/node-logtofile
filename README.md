@@ -32,27 +32,27 @@ log.on('error', function(err){
 });
 
 log.on('writting', function(){
-		//something
+		// starting to write buffered data
 });
 
 log.on('write', function(){
-		//something
+		// something was juste written
 });
 
 log.on('written', function(filePath){
-		//something		
+		// every buffered data have been written		
 });
 
 log.on('backuped', function (filePath, newFilePath) {
-		//something
+		// filePath was renamed to newFilePath
 });
 
 log.on('gzipping', function (filePath, newFilePath) {
-		//something
+		// starting to gzip filePath to gzippedFilePath
 });
 
 log.on('gzipped', function (filePath, newFilePath) {
-		//something
+		// filePath was gzipped to gzippedFilePath
 });
 
 log.write("hello world");
@@ -104,8 +104,9 @@ Returns a LogToFile instance.
 * @params {boolean} [config.verbose] enable verbose mode, default to false
 *
 * @event error({object} exception): when an async exception occured
-* @event writting({string} filePath): when starting to write
-* @event written({string} filePath): when everything is written
+* @event writting({string} filePath): when starting to write buffered data
+* @event write(): when something was juste write
+* @event written({string} filePath): when every buffered data  have been written
 * @event backuped({string} filePath, {string} newFilePath): when filePath was renamed to newFilePath
 * @event gzipping({string} filePath, {string} gzippedFilePath): when starting to gzip filePath to gzippedFilePath
 * @event gzipped({string} filePath, {string} gzippedFilePath): when filePath was gzipped to gzippedFilePath
