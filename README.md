@@ -158,32 +158,37 @@ Running bench 10. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile:
 Running bench 11. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1(9)
 ................Total:1.00GB in 43417ms: 23.59MB/s
 
-All done
 
 ```
+```
+Bench on my Ubuntu 11.10 desktop, 3GHz Intel Core 2 Duo CPU (E8400), 7200 HDD with node 0.6.6:
+Running bench 0. fileMaxSize: 5.00MB, maxBackupFileNumber: 0, gzipBackupFile: 0(-)
+................Total:1.00GB in 9212ms: 111.16MB/s
+Running bench 1. fileMaxSize: 5.00MB, maxBackupFileNumber: 1, gzipBackupFile: 0(-)
+................Total:1.00GB in 8864ms: 115.52MB/s
+Running bench 2. fileMaxSize: 5.00MB, maxBackupFileNumber: 1, gzipBackupFile: 1(1)
+................Total:1.00GB in 16428ms: 62.33MB/s
+Running bench 3. fileMaxSize: 5.00MB, maxBackupFileNumber: 1, gzipBackupFile: 1(9)
+................Total:1.00GB in 21796ms: 46.98MB/s
+Running bench 4. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 0(-)
+................Total:1.00GB in 8880ms: 115.32MB/s
+Running bench 5. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 1(1)
+................Total:1.00GB in 15996ms: 64.02MB/s
+Running bench 6. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 1(9)
+................Total:1.00GB in 21910ms: 46.74MB/s
+Running bench 7. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0(-)
+................Total:1.00GB in 21133ms: 48.46MB/s
+Running bench 8. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1(1)
+................Total:1.00GB in 16026ms: 63.90MB/s
+Running bench 9. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0(-)
+................Total:1.00GB in 21358ms: 47.94MB/s
+Running bench 10. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1(1)
+................Total:1.00GB in 15648ms: 65.44MB/s
+Running bench 11. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1(9)
+................Total:1.00GB in 21816ms: 46.94MB/s
+
 
 ```
-Bench on my Ubuntu 11.10 desktop, 3GHz Intel Core 2 Duo CPU (E8400), 7200 HDD with node 0.6.1:
-Running bench 0. fileMaxSize: 5.00MB, maxBackupFileNumber: 0, gzipBackupFile: 0
-................Total:1.00GB in 2447ms: 418.47MB/s
-Running bench 1. fileMaxSize: 5.00MB, maxBackupFileNumber: 0, gzipBackupFile: 1
-................Total:1.00GB in 2453ms: 417.45MB/s
-Running bench 2. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 0
-................Total:1.00GB in 2578ms: 397.21MB/s
-Running bench 3. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 1
-................Total:1.00GB in 9936ms: 103.06MB/s
-Running bench 4. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0
-................Total:1.00GB in 13173ms: 77.73MB/s
-Running bench 5. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1
-................Total:1.00GB in 9564ms: 107.07MB/s
-Running bench 6. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0
-................Total:1.00GB in 13550ms: 75.57MB/s
-Running bench 7. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1
-................Total:1.00GB in 9151ms: 111.90MB/s
-All done
-
-```
-
 
 ## License
 node-logtofile is licensed under the MIT license.
