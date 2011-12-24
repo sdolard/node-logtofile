@@ -130,25 +130,31 @@ Just run test/run_test.js
 Just run test/logtofile-bench.js
 
 ```
-Bench on my MacBook Pro OS X 10.6.8, 2.53GHz Intel Core 2 Duo (P8700), 7200 HDD with node 0.6.1:
-Running bench 0. fileMaxSize: 5.00MB, maxBackupFileNumber: 0, gzipBackupFile: 0
-................Total:1.00GB in 22237ms: 46.05MB/s
-Running bench 1. fileMaxSize: 5.00MB, maxBackupFileNumber: 1, gzipBackupFile: 0
-................Total:1.00GB in 20359ms: 50.30MB/s
-Running bench 2. fileMaxSize: 5.00MB, maxBackupFileNumber: 1, gzipBackupFile: 1
-................Total:1.00GB in 26732ms: 38.31MB/s
-Running bench 3. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 0
-................Total:1.00GB in 19261ms: 53.16MB/s
-Running bench 4. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 1
-................Total:1.00GB in 27426ms: 37.34MB/s
-Running bench 5. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0
-................Total:1.00GB in 19366ms: 52.88MB/s
-Running bench 6. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1
-................Total:1.00GB in 30814ms: 33.23MB/s
-Running bench 7. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0
-................Total:1.00GB in 19676ms: 52.04MB/s
-Running bench 8. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1
-................Total:1.00GB in 33875ms: 30.23MB/s
+Bench on my MacBook Pro OS X 10.6.8, 2.53GHz Intel Core 2 Duo (P8700), 7200 HDD with node 0.6.5:
+Running bench 0. fileMaxSize: 5.00MB, maxBackupFileNumber: 0, gzipBackupFile: 0(-)
+................Total:1.00GB in 21158ms: 48.40MB/s
+Running bench 1. fileMaxSize: 5.00MB, maxBackupFileNumber: 1, gzipBackupFile: 0(-)
+................Total:1.00GB in 20471ms: 50.02MB/s
+Running bench 2. fileMaxSize: 5.00MB, maxBackupFileNumber: 1, gzipBackupFile: 1(1)
+................Total:1.00GB in 26901ms: 38.07MB/s
+Running bench 3. fileMaxSize: 5.00MB, maxBackupFileNumber: 1, gzipBackupFile: 1(9)
+................Total:1.00GB in 33083ms: 30.95MB/s
+Running bench 4. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 0(-)
+................Total:1.00GB in 19655ms: 52.10MB/s
+Running bench 5. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 1(1)
+................Total:1.00GB in 26803ms: 38.20MB/s
+Running bench 6. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 1(9)
+................Total:1.00GB in 33553ms: 30.52MB/s
+Running bench 7. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0(-)
+................Total:1.00GB in 19194ms: 53.35MB/s
+Running bench 8. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1(1)
+................Total:1.00GB in 31797ms: 32.20MB/s
+Running bench 9. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0(-)
+................Total:1.00GB in 19811ms: 51.69MB/s
+Running bench 10. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1(1)
+................Total:1.00GB in 33831ms: 30.27MB/s
+Running bench 11. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1(9)
+................Total:1.00GB in 43417ms: 23.59MB/s
 
 All done
 
