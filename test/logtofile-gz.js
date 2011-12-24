@@ -25,20 +25,17 @@ assert = require('assert'),
 path = require('path'),
 util = require('util'),
 fs = require('fs'),
-logToFile = require('../lib/log-to-file'),
+zlib = require('zlib'),
+logToFile = require('../lib/logtofile'),
 dataTest = [
 	'1234567890AZERTYUIOPQSDFGHJKLMWXCVBN',
 	'&é"(§è!çà)-azertyuiop^qsdfghjklmù`xcvbn,;:='
 ].join(''),
 endData = '',
-rs, 
+rs,
 log,
-EEMPTYFILENAME = 0,
-EEMPTYDIRECTORY = 0,
-EDIRNOTFOUND = 0,
 endEvent = 0,
 closeEventUnlink = 0,
-readStreamErrorEvent = 0,
 errorEvent = 0,
 writtingEvent = 0,
 writeEvent = 0,
@@ -48,42 +45,11 @@ gzippingEvent = 0,
 gzippedEvent = 0;
 
 
-try {
-	log = logToFile.create();
-}
-catch(exceptionFoo) {
-	if (exceptionFoo.code === 'EEMPTYFILENAME') {
-		EEMPTYFILENAME++;
-	}
-}
-
-try {
-	log = logToFile.create({
-			fileName: 'l_connection'
-	});
-}
-catch(exceptionBar) {
-	if (exceptionBar.code === 'EEMPTYDIRECTORY') {
-		EEMPTYDIRECTORY++;
-	}
-}
-
-try {
-	log = logToFile.create({
-			directory: '•ë“‘',
-			fileName: 'l_connection'
-	});
-}
-catch(exceptionBaz) {
-	if (exceptionBaz.code === 'EDIRNOTFOUND') {
-		EDIRNOTFOUND++;
-	}
-}
-
 log = logToFile.create({
 		directory: __dirname,
 		fileName: path.basename(__filename) + '.test.txt',
-		gzipBackupFile: false
+		gzipBackupFile: true,
+		fileMaxSize: dataTest.length
 });
 
 log.on('error', function(err){
@@ -92,77 +58,78 @@ log.on('error', function(err){
 });
 
 log.on('writting', function(){
+		//console.log('writting');
 		writtingEvent++;
 });
 
 log.on('write', function(){
+		//console.log('write');
 		writeEvent++;
 });
 
-log.on('written', function(filePath){
-		writtenEvent++;
-		rs = fs.createReadStream(filePath, { 
-				encoding: 'utf8'
-		});
-		
-		rs.on('data', function (data) { 
-				endData += data; 
-		});
-		rs.on('end', function () { 
-				endEvent++;
-		});
-		rs.on('error', function (exception) { 
-				readStreamErrorEvent++;
-				//console.log('ReadStream exception: %s(%s)', exception.message, exception.code);
-		});
-		rs.on('close', function () { 
-				// Clean up
-				fs.unlink(filePath, function (err) {
-						if (err) {
-							throw err;
-						}
-						closeEventUnlink++;
-						
-				});
-				assert.equal(endData, dataTest);
-				log.write(dataTest); // this should throw an error (file do not exists more)
-		});
-		
+log.on('written', function(fileName){
+		//console.log('written');
+		writtenEvent++;	
 });
 
 log.on('backuped', function (filePath, newFilePath) {
 		backupedEvent++;
+		//console.log('backuped: %s', newFilePath);
 });
 
 log.on('gzipping', function (filePath, newFilePath) {
 		gzippingEvent++;
+		//console.log('gzipping %s...', filePath);
 });
 
 log.on('gzipped', function (filePath, newFilePath) {
 		gzippedEvent++;
+		//console.log('gzipped: %s', newFilePath);
+		rs = fs.createReadStream(newFilePath).pipe(zlib.createGunzip());
+		rs.on('data', function (data) { 
+				endData += data.toString();
+		});
+		rs.on('end', function () { 
+				endEvent++;	
+				// Clean up
+				fs.unlink(log.filePath, function (err) {
+						if (err) {
+							throw err;
+						}
+						closeEventUnlink++;
+						fs.unlink(newFilePath, function (err) {
+								if (err) {
+									throw err;
+								}
+								closeEventUnlink++;
+								
+						});
+						
+				});
+				assert.equal(endData, dataTest);	
+		});
+		
 });
 
 log.write(dataTest); 
 
+process.on('uncaughtException', function (err) {
+		console.log('Caught exception: ' + err);
+});
+
 process.on('exit', function () {
-		// Exception
-		assert.strictEqual(EEMPTYFILENAME, 1, 'EEMPTYFILENAME');
-		assert.strictEqual(EEMPTYDIRECTORY, 1, 'EEMPTYDIRECTORY');
-		assert.strictEqual(EDIRNOTFOUND, 1, 'EDIRNOTFOUND');
-		
 		// Event
 		assert.strictEqual(errorEvent, 0, 'errorEvent');
-		assert.strictEqual(writtingEvent, 2, 'writtingEvent');
-		assert.strictEqual(writeEvent, 2, 'writeEvent');
-		assert.strictEqual(writtenEvent, 2, 'writtenEvent');
-		assert.strictEqual(backupedEvent, 0, 'backupedEvent');
-		assert.strictEqual(gzippingEvent, 0, 'gzippingEvent');
-		assert.strictEqual(gzippedEvent, 0, 'gzippedEvent');
+		assert.strictEqual(writtingEvent, 1, 'writtingEvent');
+		assert.strictEqual(writeEvent, 1, 'writeEvent');
+		assert.strictEqual(writtenEvent, 1, 'writtenEvent');
+		assert.strictEqual(backupedEvent, 1, 'backupedEvent');
+		assert.strictEqual(gzippingEvent, 1, 'gzippingEvent');
+		assert.strictEqual(gzippedEvent, 1, 'gzippedEvent');
 		
 		// Cleanup
 		assert.strictEqual(endEvent, 1, 'endEvent');
-		assert.strictEqual(closeEventUnlink, 1, 'closeEventUnlink');
-		assert.strictEqual(readStreamErrorEvent, 1, 'readStreamErrorEvent');
+		assert.strictEqual(closeEventUnlink, 2, 'closeEventUnlink ');
 });
 
 

@@ -25,17 +25,17 @@ assert = require('assert'),
 path = require('path'),
 util = require('util'),
 fs = require('fs'),
-zlib = require('zlib'),
-logToFile = require('../lib/log-to-file'),
+logToFile = require('../lib/logtofile'),
 dataTest = [
 	'1234567890AZERTYUIOPQSDFGHJKLMWXCVBN',
 	'&é"(§è!çà)-azertyuiop^qsdfghjklmù`xcvbn,;:='
 ].join(''),
 endData = '',
-rs,
+rs, 
 log,
 endEvent = 0,
 closeEventUnlink = 0,
+readStreamErrorEvent = 0,
 errorEvent = 0,
 writtingEvent = 0,
 writeEvent = 0,
@@ -48,7 +48,7 @@ gzippedEvent = 0;
 log = logToFile.create({
 		directory: __dirname,
 		fileName: path.basename(__filename) + '.test.txt',
-		gzipBackupFile: true,
+		gzipBackupFile: false,
 		fileMaxSize: dataTest.length
 });
 
@@ -58,60 +58,63 @@ log.on('error', function(err){
 });
 
 log.on('writting', function(){
-		//console.log('writting');
 		writtingEvent++;
 });
 
 log.on('write', function(){
-		//console.log('write');
 		writeEvent++;
 });
 
 log.on('written', function(fileName){
-		//console.log('written');
 		writtenEvent++;	
 });
 
 log.on('backuped', function (filePath, newFilePath) {
 		backupedEvent++;
-		//console.log('backuped: %s', newFilePath);
-});
-
-log.on('gzipping', function (filePath, newFilePath) {
-		gzippingEvent++;
-		//console.log('gzipping %s...', filePath);
-});
-
-log.on('gzipped', function (filePath, newFilePath) {
-		gzippedEvent++;
-		//console.log('gzipped: %s', newFilePath);
-		rs = fs.createReadStream(newFilePath).pipe(zlib.createGunzip());
+		rs = fs.createReadStream(filePath + '.00', { 
+				encoding: 'utf8'
+		});
+		
 		rs.on('data', function (data) { 
-				endData += data.toString();
+				endData += data; 
 		});
 		rs.on('end', function () { 
-				endEvent++;	
+				endEvent++;
+		});
+		rs.on('error', function (exception) { 
+				readStreamErrorEvent++;
+		});
+		rs.on('close', function () { 
 				// Clean up
-				fs.unlink(log.filePath, function (err) {
+				fs.unlink(filePath, function (err) {
 						if (err) {
 							throw err;
 						}
 						closeEventUnlink++;
-						fs.unlink(newFilePath, function (err) {
-								if (err) {
-									throw err;
-								}
-								closeEventUnlink++;
-								
-						});
 						
 				});
-				assert.equal(endData, dataTest);	
+				// Clean up
+				fs.unlink(filePath + '.00', function (err) {
+						if (err) {
+							throw err;
+						}
+						closeEventUnlink++;
+						
+				});
+				assert.equal(endData, dataTest);				
 		});
-		
+});
+
+log.on('gzipping', function (filePath, newFilePath) {
+		gzippingEvent++;
+});
+
+log.on('gzipped', function (filePath, newFilePath) {
+		gzippedEvent++;
 });
 
 log.write(dataTest); 
+
 
 process.on('uncaughtException', function (err) {
 		console.log('Caught exception: ' + err);
@@ -124,8 +127,8 @@ process.on('exit', function () {
 		assert.strictEqual(writeEvent, 1, 'writeEvent');
 		assert.strictEqual(writtenEvent, 1, 'writtenEvent');
 		assert.strictEqual(backupedEvent, 1, 'backupedEvent');
-		assert.strictEqual(gzippingEvent, 1, 'gzippingEvent');
-		assert.strictEqual(gzippedEvent, 1, 'gzippedEvent');
+		assert.strictEqual(gzippingEvent, 0, 'gzippingEvent');
+		assert.strictEqual(gzippedEvent, 0, 'gzippedEvent');
 		
 		// Cleanup
 		assert.strictEqual(endEvent, 1, 'endEvent');

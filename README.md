@@ -1,4 +1,4 @@
-# node-log-to-file
+# node-logtofile
 A simple log writer for node js. 
 Rotation and compression (gzip) are supported.
 
@@ -12,10 +12,10 @@ Rotation and compression (gzip) are supported.
 curl http://npmjs.org/install.sh || sh	
 ```
 
-### Installing log-to-file
+### Installing logtofile
 
 ```
-[sudo] npm install [-g] log-to-file
+[sudo] npm install [-g] logtofile
 ```
 
 
@@ -62,7 +62,7 @@ log.write("hello world");
 
 ```
 ### Generated files
-log-to-file will create log files following this naming convention:
+logtofile will create log files following this naming convention:
 	original:    fileName [+ '.' +  fileExt]
 	rotation:    filename [+ '.' +  fileExt] + '.' + fileIndex 
 	compression: filename [+ '.' +  fileExt] + '.' + fileIndex + '.gz'
@@ -127,26 +127,29 @@ Returns a LogToFile instance.
 Just run test/run_test.js
 
 ## Bench
-Just run test/log-to-file-bench.js
+Just run test/logtofile-bench.js
 
 ```
 Bench on my MacBook Pro OS X 10.6.8, 2.53GHz Intel Core 2 Duo (P8700), 7200 HDD with node 0.6.1:
 Running bench 0. fileMaxSize: 5.00MB, maxBackupFileNumber: 0, gzipBackupFile: 0
-................Total:1.00GB in 12704ms: 80.60MB/s
-Running bench 1. fileMaxSize: 5.00MB, maxBackupFileNumber: 0, gzipBackupFile: 1
-................Total:1.00GB in 13965ms: 73.33MB/s
-Running bench 2. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 0
-................Total:1.00GB in 11047ms: 92.69MB/s
-Running bench 3. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 1
-................Total:1.00GB in 19520ms: 52.46MB/s
-Running bench 4. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0
-................Total:1.00GB in 11074ms: 92.47MB/s
-Running bench 5. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1
-................Total:1.00GB in 22329ms: 45.86MB/s
-Running bench 6. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0
-................Total:1.00GB in 10976ms: 93.29MB/s
-Running bench 7. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1
-................Total:1.00GB in 24251ms: 42.23MB/s
+................Total:1.00GB in 22237ms: 46.05MB/s
+Running bench 1. fileMaxSize: 5.00MB, maxBackupFileNumber: 1, gzipBackupFile: 0
+................Total:1.00GB in 20359ms: 50.30MB/s
+Running bench 2. fileMaxSize: 5.00MB, maxBackupFileNumber: 1, gzipBackupFile: 1
+................Total:1.00GB in 26732ms: 38.31MB/s
+Running bench 3. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 0
+................Total:1.00GB in 19261ms: 53.16MB/s
+Running bench 4. fileMaxSize: 5.00MB, maxBackupFileNumber: 5, gzipBackupFile: 1
+................Total:1.00GB in 27426ms: 37.34MB/s
+Running bench 5. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0
+................Total:1.00GB in 19366ms: 52.88MB/s
+Running bench 6. fileMaxSize: 5.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1
+................Total:1.00GB in 30814ms: 33.23MB/s
+Running bench 7. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 0
+................Total:1.00GB in 19676ms: 52.04MB/s
+Running bench 8. fileMaxSize: 10.00MB, maxBackupFileNumber: 10, gzipBackupFile: 1
+................Total:1.00GB in 33875ms: 30.23MB/s
+
 All done
 
 ```
@@ -175,4 +178,4 @@ All done
 
 
 ## License
-node-log-to-file is licensed under the MIT license.
+node-logtofile is licensed under the MIT license.

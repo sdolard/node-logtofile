@@ -1,5 +1,5 @@
 {
-  "name": "log-to-file",
+  "name": "logtofile",
   "description": "A simple log writer. Rotation and compression (gzip) are supported.",
   "version": "0.1.2",
   "author": "Sebastien Dolard <sdolard@gmail.com>",
@@ -11,9 +11,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/sdolard/node-log-to-file.git"
+    "url": "git://github.com/sdolard/node-logtofile.git"
   },
-  "main": "lib/log-to-file",
+  "main": "lib/logtofile",
   "license": "MIT",
   "scripts": {
     "test": "node test/run_test.js"
@@ -22,15 +22,15 @@
     "node": ">= 0.6.0"
   },
   "bugs": {
-    "url": "https://github.com/sdolard/node-log-to-file/issues"
+    "url": "https://github.com/sdolard/node-logtofile/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://raw.github.com/sdolard/node-log-to-file/master/LICENSE"
+      "url": "https://raw.github.com/sdolard/node-logtofile/master/LICENSE"
     }
   ],
   "dependencies": {},
   "devDependencies": {},
-  "homepage": "http://github.com/sdolard/node-log-to-file"
+  "homepage": "http://github.com/sdolard/node-logtofile"
 }

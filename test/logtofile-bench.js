@@ -2,7 +2,7 @@ var
 path = require('path'),
 util = require('util'),
 fs = require('fs'),
-logToFile = require('../lib/log-to-file'),
+logToFile = require('../lib/logtofile'),
 dataTest = '0',
 ONE_K = 1024,
 ONE_M = ONE_K * 1024,
