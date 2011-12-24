@@ -1,7 +1,7 @@
 {
   "name": "logtofile",
   "description": "A simple log writer. Rotation and compression (gzip) are supported.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "Sebastien Dolard <sdolard@gmail.com>",
   "email": "sdolard@gmail.com",
   "keywords": [
