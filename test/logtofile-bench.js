@@ -22,7 +22,14 @@ benchParams = [
 	{
 		fileMaxSize:  ONE_M * 5,
 		maxBackupFileNumber: 1,
-		gzipBackupFile: true
+		gzipBackupFile: true,
+		compressionLevel: 1
+	},
+	{
+		fileMaxSize:  ONE_M * 5,
+		maxBackupFileNumber: 1,
+		gzipBackupFile: true,
+		compressionLevel: 9
 	},
 	{ 
 		fileMaxSize: ONE_M * 5,
@@ -31,7 +38,14 @@ benchParams = [
 	{ 
 		fileMaxSize: ONE_M * 5,
 		maxBackupFileNumber: 5,
-		gzipBackupFile: true
+		gzipBackupFile: true,
+		compressionLevel: 1
+	},
+	{ 
+		fileMaxSize: ONE_M * 5,
+		maxBackupFileNumber: 5,
+		gzipBackupFile: true,
+		compressionLevel: 9
 	},
 	{ 
 		fileMaxSize: ONE_M * 5,
@@ -49,7 +63,14 @@ benchParams = [
 	{
 		fileMaxSize:  ONE_M * 10,
 		maxBackupFileNumber: 10,
-		gzipBackupFile: true
+		gzipBackupFile: true,
+		compressionLevel: 1
+	},
+	{
+		fileMaxSize:  ONE_M * 10,
+		maxBackupFileNumber: 10,
+		gzipBackupFile: true,
+		compressionLevel: 9
 }], bi = 0;
 
 for ( i = 0; i < 1024; ++i) {
@@ -114,12 +135,14 @@ function runTest() {
 			fileMaxSize: config.fileMaxSize,
 			maxBackupFileNumber: config.maxBackupFileNumber,
 			gzipBackupFile: config.gzipBackupFile || false,
+			compressionLevel: config.compressionLevel || 1,
 			verbose: config.verbose || false
 	});
-	console.log('Running bench %d. fileMaxSize: %s, maxBackupFileNumber: %d, gzipBackupFile: %d', bi, 
+	console.log('Running bench %d. fileMaxSize: %s, maxBackupFileNumber: %d, gzipBackupFile: %d(%s)', bi, 
 		octetToHuman(log.fileMaxSize), 
 		log.maxBackupFileNumber,
-		log.gzipBackupFile);
+		log.gzipBackupFile,
+		log.gzipBackupFile ? String(log.compressionLevel) : '-');
 	bi++;
 	log.on('writting', function(fileName){
 			writtingEventCount ++; 
