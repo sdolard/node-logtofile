@@ -22,6 +22,8 @@ curl http://npmjs.org/install.sh || sh
 ## Usage
 ### Basic 
 ```javascript
+var logToFile = require('logtofile');
+
 log = logToFile.create({
 		directory: __dirname,
 		fileName: 'log.txt'
