@@ -122,9 +122,6 @@ function runTest() {
 		log.gzipBackupFile);
 	bi++;
 	log.on('writting', function(fileName){
-			if (writtingEventCount === 0) {
-				start = Date.now();
-			}
 			writtingEventCount ++; 
 	});
 	
@@ -151,11 +148,11 @@ function runTest() {
 			console.log(err);
 	});
 	
-	
 	for (i = 0; i < elements; i++) {
 		log.write(dataTest); 
 		size += dataTest.length;
 	}
+	start = Date.now();
 }
 
 
