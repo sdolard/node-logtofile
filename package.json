@@ -30,7 +30,12 @@
       "url": "https://raw.github.com/sdolard/node-logtofile/master/LICENSE"
     }
   ],
-  "dependencies": {},
+  "scripts": {
+    "test": "vows test/vows* --spec"
+  },
+  "dependencies": {
+  	"vows": ">= 0.6.2"
+  },
   "devDependencies": {},
   "homepage": "http://github.com/sdolard/node-logtofile"
 }
