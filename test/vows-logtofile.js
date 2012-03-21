@@ -13,16 +13,16 @@ dataTest = [
 ].join(''),
 testFileName = 'tmpTest.txt',
 testInvalidFileName = ' /tmpTest.txt',
-testFilePath = path.normalize(__dirname + '/' + testFileName);
+testFilePath = path.normalize(__dirname + '/' + testFileName),
 testInvalidFilePath = path.normalize(__dirname + '/' + testInvalidFileName);
 
-exports.suite1 = vows.describe('logtofile').addBatch({
+exports.suite1 = vows.describe('logtofile basic').addBatch({
 		'When creating a logtofile instance without any config': {
 			topic: function() {
 				return logToFile.create();
 			},
-			'It throw an exception (Error)': function (err) {
-				assert.isTrue(err instanceof Error);
+			'It throws an exception (Error)': function (err) {
+				assert.instanceOf(err,  Error);
 			},
 			'Exception code is "EEMPTYFILENAME"': function (err) {
 				assert.strictEqual(err.code, 'EEMPTYFILENAME');
@@ -37,8 +37,8 @@ exports.suite1 = vows.describe('logtofile').addBatch({
 						fileName: testFileName
 				});
 			},
-			'It throw an exception (Error)': function (err) {
-				assert.isTrue(err instanceof Error);
+			'It throws an exception (Error)': function (err) {
+				assert.instanceOf(err, Error);
 			},
 			'Exception code is "EEMPTYDIRECTORY"': function (err) {
 				assert.strictEqual(err.code, 'EEMPTYDIRECTORY');
@@ -51,8 +51,8 @@ exports.suite1 = vows.describe('logtofile').addBatch({
 						fileName: testFileName
 				});
 			},
-			'It throw an exception (Error)': function (err) {
-				assert.isTrue(err instanceof Error);
+			'It throws an exception (Error)': function (err) {
+				assert.instanceOf(err, Error);
 			},
 			'Exception code is "EDIRNOTFOUND"': function (err) {
 				assert.strictEqual(err.code, 'EDIRNOTFOUND');
@@ -71,8 +71,8 @@ exports.suite1 = vows.describe('logtofile').addBatch({
 				});
 				return promise;
 			},
-			"It throw(emit) an exception": function (err, log) {
-				assert.isTrue(err instanceof Error);
+			"It throws(emit) an exception": function (err, log) {
+				assert.instanceOf(err, Error);
 				
 			},
 			'Exception code is "ENOENT"': function (err, log) {
@@ -97,7 +97,8 @@ exports.suite1 = vows.describe('logtofile').addBatch({
 			},
 			"It writes in a new file": function (p) {
 				assert.strictEqual(p, testFilePath);
-				assert.isFalse(p instanceof Error);				
+				assert.isTrue(path.existsSync(p));
+				
 			},
 			"Written data are correct": function (p) {
 				assert.strictEqual(fs.readFileSync(p, 'utf8'), dataTest);			
@@ -147,7 +148,7 @@ addBatch({
 		}
 }).
 addBatch({
-		'Finnaly, we clean up test dir': {
+		'Finnaly, we remove tmpTest.txt': {
 			topic: function() {
 				fs.unlink(testFilePath, this.callback);
 			},
@@ -156,116 +157,3 @@ addBatch({
 			}
 		}
 });
-/*.
-addBatch({
-'We cleanup previous test': {
-topic: function() {
-var log = logToFile.create();
-return log;
-},
-'It throw an exception (Error)': function (r) {
-assert.isTrue(r instanceof Error);
-},
-'Exception code is "EEMPTYFILENAME"': function (r) {
-assert.strictEqual(r.code, 'EEMPTYFILENAME');
-},
-'Stack is attached to this exception': function (r) {
-assert.isTrue(r.hasOwnProperty('stack'));
-}
-}
-});*/
-
-/*
-exports.suite1 = vows.describe('ping').addBatch({
-'When we ping localhost': {
-topic: function() {
-var promise = new events.EventEmitter();
-
-ping.check({
-host: 'localhost'
-}, function (err, r) {
-if (err) { 
-promise.emit('error', err, r); 
-} else { 
-promise.emit('success', r); 
-}
-});
-return promise;
-},
-'It succeed': function (r) {
-assert.equal(r.host, 'localhost');
-assert.equal(r.exitCode, 0);
-}
-},
-'When we ping nohost': {
-topic: function() {
-var promise = new events.EventEmitter();
-
-ping.check({
-host: 'nohost'
-}, function (err, r) {
-if (err) { 
-promise.emit('error', err, r); 
-} else { 
-promise.emit('success', r); 
-}
-});
-return promise;
-},
-'It failed': function (err, r) {
-//console.log(util.inspect(r));
-assert.equal(err.code, 'EPINGFAILED');
-assert.notEqual(r.exitCode, 0);
-}
-},
-'When we ping ::1': {
-topic: function() {
-var promise = new events.EventEmitter();
-
-ping.check({
-host: '::1',
-ipV6: true
-}, function (err, r) {
-if (err) { 
-promise.emit('error', err, r); 
-} else { 
-promise.emit('success', r); 
-}
-});
-return promise;
-},
-'It succeed': function (r) {
-assert.equal(r.host, '::1');
-assert.equal(r.exitCode, 0);
-
-}
-},
-'When we ping 1.1.1.1 with timeout set to 1s': {
-topic: function() {
-var  
-promise = new events.EventEmitter();
-start = new Date();
-
-ping.check({
-host: '1.1.1.1',
-timeout: 1
-}, function (err, r) {
-end = new Date();
-if (err) { 
-promise.emit('error', err, r); 
-} else { 
-promise.emit('success', r); 
-}
-
-});
-return promise;
-},
-'It takes 1s to return': function (r) {
-assert.equal(r.host, '1.1.1.1');
-assert.notEqual(r.exitCode, 0);
-assert.equal(end.getTime() - start.getTime() >= 1000, true);
-}
-}
-});
-
-*/

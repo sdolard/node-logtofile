@@ -16,7 +16,7 @@
   "main": "lib/logtofile",
   "license": "MIT",
   "scripts": {
-    "test": "node test/run_test.js"
+    "test": "vows test/vows*.js --spec"
   },
   "engines": {
     "node": ">= 0.6.0"
@@ -30,9 +30,6 @@
       "url": "https://raw.github.com/sdolard/node-logtofile/master/LICENSE"
     }
   ],
-  "scripts": {
-    "test": "vows test/vows* --spec"
-  },
   "dependencies": {
   	"vows": ">= 0.6.2"
   },
