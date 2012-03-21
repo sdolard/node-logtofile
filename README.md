@@ -1,4 +1,4 @@
-# node-logtofile
+# node-logtofile [![Build Status](https://secure.travis-ci.org/sdolard/node-logtofile.png?branch=master)](http://travis-ci.org/sdolard/node-logtofile)
 A simple log writer for node js. 
 Rotation and compression (gzip) are supported.
 
