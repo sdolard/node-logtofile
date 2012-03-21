@@ -13,8 +13,8 @@ dataTest = [
 ].join(''),
 testFileName = 'tmpTest.txt',
 testInvalidFileName = ' /tmpTest.txt',
-testFilePath = __dirname + '/' + testFileName;
-testInvalidFilePath = __dirname + '/' + testInvalidFileName;
+testFilePath = path.normalize(__dirname + '/' + testFileName);
+testInvalidFilePath = path.normalize(__dirname + '/' + testInvalidFileName);
 
 exports.suite1 = vows.describe('logtofile').addBatch({
 		'When creating a logtofile instance without any config': {
