@@ -97,7 +97,7 @@ exports.suite1 = vows.describe('logtofile basic').addBatch({
 			},
 			"It writes in a new file": function (p) {
 				assert.strictEqual(p, testFilePath);
-				assert.isTrue(path.existsSync(p));
+				assert.isTrue(fs.existsSync(p));
 				
 			},
 			"Written data are correct": function (p) {

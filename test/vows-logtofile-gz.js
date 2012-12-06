@@ -34,10 +34,10 @@ exports.suite1 = vows.describe('logtofile gz').addBatch({
 				
 			},
 			"It creates a gz file": function (log, oldFilePath, newFilePath) {
-				assert.isTrue(path.existsSync(newFilePath));				
+				assert.isTrue(fs.existsSync(newFilePath));				
 			},
 			"It removes old file": function (log, oldFilePath, newFilePath) {
-				assert.isFalse(path.existsSync(testFilePath));				
+				assert.isFalse(fs.existsSync(testFilePath));				
 			}
 		}
 }).
@@ -64,7 +64,7 @@ addBatch({
 				setTimeout(this.callback, 100); // must be async
 			},
 			"it creates a new empty file": function () {
-				assert.isTrue(path.existsSync(testFilePath));
+				assert.isTrue(fs.existsSync(testFilePath));
 			}
 		}
 }).

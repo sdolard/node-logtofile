@@ -33,13 +33,13 @@ exports.suite1 = vows.describe('logtofile backup').addBatch({
 				
 			},
 			"It creates a backup file": function (log, oldFilePath, newFilePath) {
-				assert.isTrue(path.existsSync(newFilePath));				
+				assert.isTrue(fs.existsSync(newFilePath));				
 			},
 			"Backup content is correct": function (log, oldFilePath, newFilePath) {
 				assert.strictEqual(fs.readFileSync(newFilePath, 'utf8'), dataTest);
 			},
 			"It removes old file": function (log, oldFilePath, newFilePath) {
-				assert.isFalse(path.existsSync(oldFilePath));				
+				assert.isFalse(fs.existsSync(oldFilePath));				
 			}
 		}
 }).
@@ -49,7 +49,7 @@ addBatch({
 				setTimeout(this.callback, 100); // must be async
 			},
 			"it creates a new empty file": function () {
-				assert.isTrue(path.existsSync(testFilePath));
+				assert.isTrue(fs.existsSync(testFilePath));
 			}
 		}
 }).
